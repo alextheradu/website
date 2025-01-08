@@ -1,0 +1,266 @@
+/* Apply box-sizing globally */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* General Styles */
+body {
+    transition: background-color 0.5s, color 0.5s;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    height: 80vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: inherit; /* Inherits based on light/dark mode */
+    display: flex;
+    justify-content: flex-end; /* Align switch to the right */
+    align-items: center;
+    padding: 10px 20px; /* Sufficient padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    z-index: 1000; /* Keeps header above other content */
+    overflow: visible; /* Prevents clipping */
+    flex-wrap: wrap; /* Allows content to wrap on small screens */
+}
+
+/* Responsive Header Adjustments */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 10px; /* Reduced horizontal padding on small screens */
+        justify-content: center; /* Center the switch on small screens */
+    }
+}
+
+/* Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg, #ccc, #e0e0e0); /* Light mode gradient */
+    transition: background 0.4s, box-shadow 0.4s;
+    border-radius: 34px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.slider:before {
+    position: absolute;
+    content: "\2600"; /* Sun icon */
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: transform 0.4s, content 0.4s, background-color 0.4s, color 0.4s;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: black; /* Sun icon color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+    background: linear-gradient(145deg, #2196F3, #1E90FF); /* Dark mode gradient */
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "\1F319"; /* Moon icon */
+    color: darkgrey; /* Moon icon color */
+    background-color: #f0f0f0;
+}
+
+/* Responsive Switch Adjustments */
+@media (max-width: 480px) {
+    .switch {
+        width: 50px;
+        height: 28px;
+    }
+    
+    .slider:before {
+        height: 22px;
+        width: 22px;
+        left: 3px;
+        bottom: 3px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 320px) {
+    .switch {
+        width: 40px;
+        height: 24px;
+    }
+    
+    .slider:before {
+        height: 18px;
+        width: 18px;
+        left: 2px;
+        bottom: 2px;
+        font-size: 14px;
+    }
+}
+
+/* Light and Dark Mode Styles */
+body.light-mode {
+    background-color: rgb(220, 220, 220);
+    color: rgb(20, 20, 20);
+}
+
+body.dark-mode {
+    background-color: rgb(20, 20, 20);
+    color: rgb(220, 220, 220);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Allow child elements to stretch */
+    justify-content: center; /* Center vertically */
+    padding: 20px; /* Add padding to prevent clipping */
+    text-align: center;
+}
+
+/* Heading Styles */
+h1 {
+    font-size: 5rem; /* Increased font size for better visibility */
+    background: linear-gradient(270deg, #28a745, #007BFF, #6f42c1, #007BFF, #28a745);
+    background-size: 800% 800%; /* Large size for smooth gradient movement */
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent; /* Ensures text is transparent in WebKit browsers */
+    animation: gradientMove 12s linear infinite; /* Smooth left-to-right animation */
+    margin: 20px 0;
+}
+
+body.dark-mode h1 {
+    background: linear-gradient(270deg, #28a745, #007BFF, #6f42c1, #007BFF, #28a745);
+    background-size: 800% 800%; /* Ensure same background-size */
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent; /* Ensures text is transparent in WebKit browsers */
+    animation: gradientMove 12s linear infinite; /* Apply same animation */
+}
+
+/* Remove gradient and animation in light mode */
+body.light-mode h1 {
+    background: none; /* Remove background gradient */
+    -webkit-background-clip: none; /* Disable background clipping */
+    background-clip: none;
+    color: black; /* Set text color to black */
+    -webkit-text-fill-color: black; /* Ensure text is black in WebKit browsers */
+    animation: none; /* Disable gradient animation */
+}
+
+h3 {
+    font-weight: 100;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Gradient Animation */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Button Container Styles */
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centers the buttons horizontally */
+    gap: 20px; /* Space between buttons */
+    margin-top: 20px; /* Space above buttons */
+    padding-right: 0; /* Removes right padding to prevent clipping */
+}
+
+/* Responsive Button Container */
+@media (max-width: 600px) {
+    .button-container {
+        justify-content: center; /* Center buttons on small screens */
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
+        padding-right: 0; /* Remove right padding */
+    }
+    
+    .btn {
+        width: 100%; /* Make buttons take full width */
+        max-width: 200px; /* Optional: limit maximum width */
+    }
+}
+
+/* Button Styles */
+.btn {
+    background: linear-gradient(145deg, #b0b0b0, #808080); /* Greyscale gradient for light mode */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 0; /* Removed margin to utilize gap in flex container */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none; /* Ensures buttons have no underline if using <a> tags */
+}
+
+.btn:hover {
+    background: linear-gradient(145deg, #808080, #b0b0b0); /* Hover greyscale gradient */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .btn {
+    background: linear-gradient(145deg, #555555, #333333); /* Dark mode button gradient */
+    color: #ddd;
+}
+
+body.dark-mode .btn:hover {
+    background: linear-gradient(145deg, #333333, #555555); /* Dark mode hover gradient */
+}
+
+/* Smooth Font Transition */
+h1, h3 {
+    transition: color 0.5s, background 0.5s;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <!-- Setup Document -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat Sheet - Console Output</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <!-- Set up the bane of humanity (jQuery)  -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <!-- Set up highlightjs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+    .center {
+        font-family: "Lucida Console", "Courier New", monospace;
+        color: rgb(0, 0, 0);
+      }
+    </style>
+
+    <!-- Style stuff -->
+    <link defer rel="stylesheet" href="./../styles.css">
+
+</head>
+
+<body>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function() {
+            const codeElements = document.querySelectorAll(".copyable");
+            codeElements.forEach(codeElement => {
+                codeElement.addEventListener("click", () => {
+                    const codeContents = codeElement.innerText;
+                    navigator.clipboard.writeText(codeContents);
+
+                    toastr.options.progressBar = true;
+                    toastr.success("Copied to clipboard.");
+                });
+            });
+        });
+    </script>
+
+    <main>
+        <h2 class="center">Cheat Sheet - Console Output</h2>
+        <a href="../l" class="center">Back to Cheat Sheet Directory</a>
+
+        <section>
+            <h3 class="center">Summary</h3>
+            <p class="center">The console is a window in your Eclipse app that lets you output plain text and helps you debug your
+                code.
+                The console is accessed through some standard methods, which will be explained below.</p>
+        </section>
+        <section>
+            <h4 class="center">Printing text</h4>
+
+            <p class="center">To print out a line of text to the console, use the following method. Replace "Your message here" with
+                your
+                message, and make sure to keep the quotations.</p>
+            <pre><code class="language-java copyable">System.out.println("Your message here");</code></pre>
+
+            <p class="center">Using println automatically goes to the next line. To avoid this, use the following:</p>
+            <pre><code class="language-java copyable">System.out.print("Your message here");</code></pre>
+
+            <p class="center">In the string cheat sheet, you can find more information about what you can print out. You can also find
+                information on the scanner cheat sheet about how to read input in as well.</p>
+        </section>
+        <section>
+            <h4 class="center">Printing variables</h4>
+
+            <p class="center">Printing out variables is a little different than printing out text. To print out a variable, use the
+                following:</p>
+            <pre><code class="language-java copyable">System.out.println(variableName);</code></pre>
+
+            <p class="center">Replace "variableName" with the name of the variable you want to print out. This will print out the value
+                of
+                the variable.</p>
+
+            <p class="center">You can always chain print statements together to print out a complex message. For example:</p>
+            <pre><code class="language-java copyable">String name="Alex";
+int age="14";
+System.out.println("My name is " 
+    + name + " and I am " 
+    + age + " years old.");</code></pre>
+            <p class="center">Confused about what those plus signs are doing? No worries, check the strings cheat sheet.</p>
+        </section>
+        <section>
+            <h4 class="center">See Also</h4>
+            <ul>
+                <li class="center"><a class="center", href="/subpages/totallynotcoolman/strings.html">Strings Cheatsheet</a></li>
+                <li class="center"><a class="center", href="/subpages/totallynotcoolman/math.html">Math Cheatsheet</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+
+</html>

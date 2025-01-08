@@ -1,0 +1,74 @@
+.center {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: rgb(220, 220, 220);
+}
+.center-sticky
+{
+  position: sticky;
+  top: 0;
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: rgb(220, 220, 220);
+}
+body {
+    margin: 10;
+    text-align: center;
+}
+h1 {
+    font-size: 50px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    
+  }
+  
+  p {
+    font-size: 30px;
+  }
+
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #474747;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #000000}
+
+.button:active {
+  background-color: #2b2b2b;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: rgb(0, 0, 0)
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/lines/LineSegmentsGeometry.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/lines/LineSegments2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/lines/LineMaterial.js"></script>
+    <!-- ...existing code... -->
+</head>
+<body>
+
+    <!-- ...existing code... -->
+    <script>
+        // Set up the scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create a geometry and a material, then combine them into a mesh
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // Create an outline for the cube
+        const edges = new THREE.EdgesGeometry(geometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+        const outline = new THREE.LineSegments(edges, lineMaterial);
+        scene.add(outline);
+
+        // Position the camera
+        camera.position.z = 5;
+
+        // Create an animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate the cube and its outline for some basic animation
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            outline.rotation.x += 0.01;
+            outline.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Add click event listener to h1 element
+        let clickCount = 0;
+        const h1 = document.querySelector('h1');
+        h1.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                window.location.href = 'https://example.com';
+            }
+        });
+    </script>
+    <!-- ...existing code... -->
+</body>
+</html>

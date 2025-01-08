@@ -1,0 +1,55 @@
+.cc-container {
+
+    display: flex;
+    height: 100vh;
+
+}
+
+.cookie-panel {
+
+    background-color: burlywood;
+    width: 25vw;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+
+}
+
+.center-panel {
+
+    background-color: cadetblue;    
+    width: 60vw;
+
+}
+
+.shop-panel {
+
+    background-color: darkorange;
+    width: 20vw;
+
+}
+
+body {
+    
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+
+}
+
+.cookie-panel-titles {
+
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.611);
+    color: azure;
+    margin-top: 5vh;
+
+}
+
+#bakery-name {
+    font-size: larger;
+}
+
+#cookie-amount {
+    font-size: xx-large;
+}

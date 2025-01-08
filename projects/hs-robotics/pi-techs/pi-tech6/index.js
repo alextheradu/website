@@ -1,0 +1,1 @@
+let cookieAmountElement = document.getElementById('cookie-amount');
