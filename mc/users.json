@@ -1,0 +1,11 @@
+
+[
+  {
+    "username": "admin",
+    "passwordHash": "$2b$10$abcdefghijklmnopqrstuv"
+  },
+  {
+    "username": "user1",
+    "passwordHash": "$2b$10$uvwxyzabcdefghijklmnop"
+  }
+]

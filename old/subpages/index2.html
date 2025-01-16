@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Password Protected Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <!-- <script src="/subpages/index.js"></script>
+  <link rel="stylesheet" href="./style.css"> -->
+  <style>
+    .center {
+      font-family: "Lucida Console", "Courier New", monospace;
+      color: rgb(0, 0, 0);
+      text-align: center;
+    }
+  </style>
+</head>
+<body style="background-color:rgb(20, 20, 20);">
+  <ul class="center">
+    <li><a href="../">Home</a></li>
+    <li><a href="/video-production-projects/">Video Production</a></li>
+    <li><a href="/computer-science-projects/">Computer Science</a></li>
+    <li style="float:right"><a href="/about-me/">About Me</a></li>
+  </ul>
+  <p></p>
+  <form id="login-form">
+    <label style="color:rgb(220, 220, 220);" class="center" for="password", class="color: rgb(80, 220, 255);">Enter the Magic Word:</label>
+    <input type="password" id="password" name="password" required>
+    <button class="center" type="submit">Submit</button>
+  </form>
+
+  <div id="protected-content" style="display: none;">
+    <!-- Content that will be displayed only if password is correct -->
+    
+      <p><a href="/subpages/totallynotcoolman/strings.html" style="color:rgb(220, 220, 220);" class="center">Strings Cheatsheet</a></p>
+      <p><a href="/subpages/totallynotcoolman/math.html" style="color:rgb(220, 220, 220);" class="center">Math Cheatsheet</a></p>
+      <p><a href="/subpages/totallynotcoolman/consoleoutput.html" style="color:rgb(220, 220, 220);" class="center">Console Output Cheatsheet</a></p>
+    
+    <p style="color:rgb(220, 220, 220);" class="center">More will be available later (probably)</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const protectedContent = document.getElementById('protected-content');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const passwordInput = document.getElementById('password').value;
+
+      // Hash the input using SHA-256
+      const hashedInput = CryptoJS.SHA256(passwordInput).toString();
+      const correctHash = "3b14b7599cb7c94611b5e99a933319e2d6cf5e1fc4b90b68726bffb8fa3d5b26"; // Example hash of 'skibidi'
+
+      if (hashedInput === correctHash) {
+        protectedContent.style.display = "block";
+      } else {
+        alert("Incorrect password. Redirecting...");
+        window.location.href = "/subpages/blank.html";
+      }
+    });
+  </script>
+</body>
+</html>

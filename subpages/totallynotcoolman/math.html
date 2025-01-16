@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    
+    <!-- Setup Document -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat Sheet - Math</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <!-- Set up the bane of humanity (jQuery)  -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <!-- Set up highlightjs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+    <!-- Set up toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Style stuff -->
+    <link defer rel="stylesheet" href="./../style.css">
+    <style>
+        .center {
+                font-family: "Lucida Console", "Courier New", monospace;
+                color: rgb(0, 0, 0);
+            }
+    </style>
+</head>
+
+<body>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function() {
+            const codeElements = document.querySelectorAll(".copyable");
+            codeElements.forEach(codeElement => {
+                codeElement.addEventListener("click", () => {
+                    const codeContents = codeElement.innerText;
+                    navigator.clipboard.writeText(codeContents);
+
+                    toastr.options.progressBar = true;
+                    toastr.success("Copied to clipboard.");
+                });
+            });
+        });
+    </script>
+
+    <main>
+        <h2 class="center">Cheat Sheet - Math</h2>
+        <a href="../" class="center">Back to Cheat Sheet Directory</a>
+
+        <section>
+            <h3 class="center">Summary</h3>
+            <p class="center">Computers are VERY good at math. That's why we need to learn about using them for this purpose. This cheat sheet will show you the basic tools Java provides you with in order to do math effectively.</p>
+        </section>
+        
+        <section>
+            <h4 class="center">Basic Operations</h4>
+            <p class="center">Most operations with numbers are just how we write it in real life. Here is how to add, subtract, multiply, divide, or find the remainder for two INTEGERS.</p>
+            <pre><code class="language-java copyable">int a = 5;
+int b = 3;
+
+System.out.println(a + b); // 8
+System.out.println(a - b); // 2
+System.out.println(a * b); // 15
+System.out.println(a / b); // 1
+System.out.println(a % b); // 2 (the remainder of a / b is 2)</code></pre>
+            </code></pre>
+            <p class="center">You can always just set the result of some math to a variable, but make sure it is the right type. This will be covered futher down.</p>
+            <pre><code class="language-java copyable">int result = a + b;</code></pre>
+        </section>
+        
+        <section>
+            <h4 class="center">Basic Operations - Decimals</h4>
+            <p class="center">When you are working with decimals, you need to be careful. Java will automatically round down to the nearest integer if you are not careful. Here is how to add, subtract, multiply, divide, and find the remainder of two DECIMALS.</p>
+            <pre><code class="language-java copyable">double c = 5.1;
+double d = 3.2;
+
+System.out.println(c + d); // 8.3
+System.out.println(c - d); // 1.9
+System.out.println(c * d); // 16.32
+System.out.println(c / d); // 1.59375
+System.out.println(c % d); // 1.9 (the remainder of c / d is 1.9)</code></pre>
+            </code></pre>
+            <p class="center">Just like with integers, you can set the result of some math to a variable, but make sure it is the right type. What happens, though, if you set the result to an integer instead of a double?</p>
+            <pre><code class="language-java copyable">double result = c + d; // 8.3
+int result = c + d; // 8</code></pre>
+            <p class="center">As you can see, you lose information if you store a decimal value as a double. Make sure to be careful when storing your variables!</p>
+        </section>
+
+        <section>
+            <h4 class="center">Extra Math Features</h4>
+            <p class="center">Mostly, for the rest of this cheat sheet, we will be working with doubles as that's just how these functions work. The built-in Math class in Java gives us tons of resources to do complex math and math-adjacent things.</p>
+            <p class="center">To get the absolute value of a number:</p>
+            <pre><code class="language-java copyable">double n = -5.1;
+System.out.println(Math.abs(n)); // 5.1</code></pre>
+            <p class="center">To get the mathematical constant PI:</p>
+            <pre><code class="language-java copyable">System.out.println(Math.PI); // 3.141592653589793</code></pre>
+            <p class="center">To get the sin, cos, or tan of a ratio:</p>
+            <pre><code class="language-java copyable">double angle = Math.PI / 4;
+System.out.println(Math.sin(angle)); // 0.7071067811865475
+System.out.println(Math.cos(angle)); // 0.7071067811865476
+System.out.println(Math.tan(angle)); // 0.9999999999999999</code></pre>
+            <p class="center">To round numbers up, down, or normally:</p>
+            <pre><code class="language-java copyable">double number = 5.6;
+System.out.println(Math.ceil(number)); // 6.0
+System.out.println(Math.floor(number)); // 5.0
+System.out.println(Math.round(number)); // 6</code></pre>
+            <p class="center">To get the minimum or maximum of two numbers:</p>
+            <pre><code class="language-java copyable">double x = 5.6;
+double y = 3.2;
+System.out.println(Math.min(x, y)); // 3.2
+System.out.println(Math.max(x, y)); // 5.6</code></pre>
+            <p class="center">To raise a number to a power:</p>
+            <pre><code class="language-java copyable">double base = 2;
+double exponent = 3;
+System.out.println(Math.pow(base, exponent)); // 8.0</code></pre>
+            <p class="center">To get the square root of a number:</p>
+            <pre><code class="language-java copyable">double number = 9;
+System.out.println(Math.sqrt(number)); // 3.0
+//or
+System.out.println(Math.pow(number, 0.5)); // 3.0</code></pre>
+            <p class="center">And lastly, to get a random number between 0 and 1:</p>
+            <pre><code class="language-java copyable">System.out.println(Math.random()); // 0.123456789</code></pre>
+            <p class="center">Don't worry, random values will become much more useful later on.</p>
+        </section>
+
+        <section>
+            <h4 class="center">Changing numbers in one line</h4>
+            <p class="center">When you want to change a number in one line, you can use the following shorthand. This is especially useful when you want to increment or decrement a number by one.</p>
+            <pre><code class="language-java copyable">int number = 5;
+number++; // number is now 6
+number--; // number is now 5</code></pre>
+            <p class="center">But what if you want to increment or decrement by more than one? You can use the following shorthand.</p>
+            <pre><code class="language-java copyable">int number = 5;
+number += 3; // number is now 8
+number -= 2; // number is now 6</code></pre>
+            <p class="center">This also goes for all the other basic operators. Instead of adding or subtracting, you can multiple, divide, or modulus!</p>
+            <pre><code class="language-java copyable">int number = 5;
+number *= 3; // number is now 15
+number /= 5; // number is now 3
+number *= 10; // number is now 30
+number %= 7; // number is now 2 (30 / 7 leaves a remainder of 2)</code></pre>
+        </section>
+
+        <section>
+            <h4 class="center">Checking divisibility</h4>
+            <p class="center">Using modulus, you can find out if something is divisible by another thing. If you modulus one number with another, if the answer is 0, then it must be divisible by that number, as there is no remainder! For example:</p>
+            <pre><code class="language-java copyable">int number = 10;
+int divisor = 5;
+System.out.println(number % divisor); // 0, so 10 is divisible by 5</code></pre>
+            <p class="center">But if you modulus a number that is not divisible by another, you will get a remainder. For example:</p>
+            <pre><code class="language-java copyable">int number = 10;
+int divisor = 3;
+System.out.println(number % divisor); // 1, so 10 is not divisible by 3</code></pre>
+            <p class="center">Using this, you can check if a number is even or odd. If a number modulus 2 is 0, then it is even. If it is 1, then it is odd.</p>
+            <pre><code class="language-java copyable">int number = 10;
+int otherNumber = 15;
+System.out.println(number % 2); // 0, so 10 is even
+System.out.println(otherNumber % 2); // 1, so 15 is odd</code></pre>
+        </section>
+    </main>
+    <h5 class="center">(Credit to Nate Levison for mostly everything)</h5>
+    <h4 class="center">See Also</h4>
+            
+            
+</body>
+
+</html>

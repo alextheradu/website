@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Manager</title>
+  <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.15.0/dist/pocketbase.min.js"></script>  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Blog Manager</h1>
+
+    <div id="login-section">
+      <h2>Admin Login</h2>
+      <input type="email" id="admin-email" placeholder="Admin Email" required>
+      <input type="password" id="admin-password" placeholder="Password" required>
+      <button onclick="adminLogin()">Login</button>
+    </div>
+
+    <div id="blog-section" class="hidden">
+      <h2>Submit a Blog</h2>
+      <input type="text" id="blog-title" placeholder="Blog Title" required>
+      <textarea id="blog-body" placeholder="Blog Content" rows="5" required></textarea>
+      <input type="date" id="blog-date" required>
+      <button onclick="submitBlog()">Submit Blog</button>
+    </div>
+  </div>
+
+  <script>
+    const pb = new PocketBase('https://database.alexradu.co'); // Replace with your PocketBase URL
+
+    async function adminLogin() {
+      const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+
+      try {
+        await pb.admins.authWithPassword(email, password);
+        alert('Logged in successfully!');
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('blog-section').classList.remove('hidden');
+      } catch (error) {
+        alert('Login failed: ' + error.message);
+      }
+    }
+
+    async function submitBlog() {
+      const title = document.getElementById('blog-title').value;
+      const body = document.getElementById('blog-body').value;
+      const date = document.getElementById('blog-date').value;
+
+      const blogData = {
+        title,
+        body,
+        date
+      };
+
+      try {
+        const record = await pb.collection('blogs').create(blogData);
+        alert('Blog submitted successfully: ' + JSON.stringify(record));
+      } catch (error) {
+        alert('Error submitting blog: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
