@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Detection</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #282c34;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #message {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        #enterFullscreenBtn {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background-color: #61dafb;
+            border: none;
+            border-radius: 8px;
+            color: #282c34;
+            transition: background-color 0.3s ease;
+        }
+        #enterFullscreenBtn:hover {
+            background-color: #21a1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="message">Click the button to enter fullscreen</div>
+    <button id="enterFullscreenBtn">Enter Fullscreen</button>
+
+    <script>
+        let hasExitedFullscreen = false; // Flag to track if user has exited fullscreen
+
+        // Function to enter fullscreen mode
+        function enterFullscreen() {
+            if (hasExitedFullscreen) return; // Prevent re-entry into fullscreen once exited
+            
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        }
+
+        // Function to detect if fullscreen has been exited
+        function detectFullscreenExit() {
+            if (!document.fullscreenElement) {
+                document.getElementById('message').textContent = "You exited fullscreen mode!";
+                hasExitedFullscreen = true; // Lock out future fullscreen attempts
+                document.getElementById('enterFullscreenBtn').disabled = true; // Disable the button
+                document.getElementById('enterFullscreenBtn').style.backgroundColor = '#555'; // Change button style
+                document.getElementById('enterFullscreenBtn').style.cursor = 'not-allowed'; // Change cursor to indicate disabled state
+            } else {
+                document.getElementById('message').textContent = "You're in fullscreen mode";
+            }
+        }
+
+        // Listen for changes in fullscreen state
+        document.addEventListener('fullscreenchange', detectFullscreenExit);
+        document.addEventListener('mozfullscreenchange', detectFullscreenExit);
+        document.addEventListener('webkitfullscreenchange', detectFullscreenExit);
+        document.addEventListener('msfullscreenchange', detectFullscreenExit);
+
+        // Attach the fullscreen function to the button
+        document.getElementById('enterFullscreenBtn').addEventListener('click', () => {
+            enterFullscreen();
+            document.getElementById('message').textContent = "You're in fullscreen mode";
+        });
+    </script>
+
+</body>
+</html>

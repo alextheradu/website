@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Projects</title>
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="/subpages/style.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <script>
+        function checkPassword() {
+            var password = prompt("Please enter the password:");
+            if (password === "t") {
+                document.getElementById("content").style.display = "block";
+            } else {
+                alert("Incorrect password!");
+                window.location.href = "/blank.html"; // Redirect to another page
+            }
+        }
+        window.onload = checkPassword;
+    </script>
+</head>
+<body class="light-mode">
+    <div id="content" style="display:none;">
+        <header class="header">
+            <!-- Container to align everything -->
+            <div class="container">
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <button class="btn" onclick="location.href='../'">Home</button>
+                    <button class="btn" onclick="location.href='/about-me/'">About Me</button>
+                    <button class="btn" onclick="location.href='/links/'">Links</button>
+                </div>
+                <!-- Dark Mode Switch -->
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </header>
+        <h1>Welcome!</h1>
+        <h3>If you have access to this page, that means that you are worthy of seeing its contents.</h3>
+        <div class="parent">
+            
+        </div>
+    </div>
+</body>
+</html>

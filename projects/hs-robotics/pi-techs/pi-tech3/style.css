@@ -1,0 +1,12 @@
+body {
+
+    background-color: beige;
+    font-family: sans-serif;
+
+}
+.counter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0vh;
+}

@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "@sveltejs/adapter-auto": "^3.3.1",
+    "@xterm/xterm": "^5.5.0",
+    "express": "^4.21.2",
+    "mcping-js": "^1.5.0",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.0",
+    "xterm": "^5.3.0"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.2.9"
+  },
+  "name": "alexradu",
+  "version": "1.0.0",
+  "description": "I made a website to share my HCS projects, Video Production Projects, and other cool stuff. I'm coding it all by myself (I'm a big boy now) and hosting it on GitHub because I don't feel like paying for hosting.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

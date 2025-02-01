@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login Panel</title>
+</head>
+<body>
+    <h1>Admin Login</h1>
+    <form id="loginForm">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <h1>Upload a New Blog Post</h1>
+    <form id="blogForm" style="display: none;">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="body">Body:</label><br>
+        <textarea id="body" name="body" rows="10" cols="50" required></textarea><br><br>
+
+        <label for="date">Date:</label><br>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="index.js"></script>
+</body>
+</html>

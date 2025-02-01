@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - alexradu.co</title>
+    <meta name="description" content="Welcome to my website! Here you can find information about me and my awesome projects." />
+    <!-- <script src="/static/where.js"></script> -->
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    
+</head>
+<body class="light-mode"> <!-- Set initial mode -->
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Dark Mode Switch -->
+        <label class="switch" aria-label="Toggle Dark Mode">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Alex Radu</h1>
+        <h3>Welcome to my website! Here you can find information about me and my projects.</h3>
+        
+        <!-- Button Container -->
+        <div class="button-container">
+            <button class="btn" onclick="location.href='/about-me/'">About Me</button>
+            <button class="btn" onclick="location.href='/projects/'">Projects</button>
+            <button class="btn" onclick="location.href='/links/'">My Links</button>
+            <button class="btn" onclick="location.href='https://alexradu.co/blog'">Blog</button>
+        </div>
+    </div>
+</body>
+<script src="index.js" defer></script>
+<link rel="stylesheet" href="style.css">
+</html>

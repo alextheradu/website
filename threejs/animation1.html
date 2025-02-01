@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Cube</title>
+    <style>
+        body { 
+            margin: 0; 
+            background-color: white; /* Set background to white */
+        }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/loaders/FontLoader.js"></script> <!-- Added FontLoader -->
+    <!-- <script src="https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"></script> Removed redundant font script -->
+    <script>
+        // Set up the scene, camera, and renderer
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff); // Set scene background to white
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // // Create a cube
+        // const geometry = new THREE.BoxGeometry();
+        // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        // const cube = new THREE.Mesh(geometry, material);
+        // scene.add(cube);
+
+        // // Add an outline to the cube
+        // const outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.BackSide }); // Changed color to blue
+        // const outline = new THREE.Mesh(geometry, outlineMaterial);
+        // outline.scale.multiplyScalar(1.05);
+        // scene.add(outline);
+
+        // Add "Alex Radu" text to the center with Helvetiker font
+        const loader = new THREE.FontLoader();
+        let textMesh; // Declare textMesh globally
+        let outlineMesh; // Declare outlineMesh globally
+
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+            const textGeometry = new THREE.TextGeometry('Alex Radu', {
+                font: font,
+                size: 0.5,
+                height: 0.1,
+                curveSegments: 12,
+                bevelEnabled: false
+            });
+            textGeometry.center(); // Center the text geometry
+            const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Black color for text
+            textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            scene.add(textMesh);
+
+            // Add a green outline to the text
+            const outlineGeometry = new THREE.TextGeometry('Alex Radu', {
+                font: font,
+                size: 0.485,
+                height: 0.13,
+                curveSegments: 12,
+                bevelEnabled: false
+            });
+            outlineGeometry.center(); // Center the outline geometry
+            const outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide }); // Green outline
+            outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
+            
+            outlineMesh.scale.multiplyScalar(1.05); // Adjusted scale for better fit
+            
+            scene.add(outlineMesh);
+        });
+
+        // Set camera position for a 25-degree angle
+        const angle = 25 * (Math.PI / 180); // Convert degrees to radians
+        camera.position.set(5 * Math.cos(angle), 5 * Math.sin(angle), 5 * Math.cos(angle));
+
+        // Animation loop to orbit the camera while maintaining a 25-degree angle and animate the text
+        function animate() {
+            requestAnimationFrame(animate);
+            const radius = 5;
+            const speed = 0.0005; // Reduced speed from 0.01 to 0.0005
+            const time = Date.now() * speed;
+            camera.position.x = radius * Math.cos(time) * Math.cos(angle);
+            camera.position.y = radius * Math.sin(angle);
+            camera.position.z = radius * Math.sin(time) * Math.cos(angle);
+            camera.lookAt(scene.position);
+
+            // Animate the text and its outline
+            if (textMesh && outlineMesh) {
+                // Rotate around Y axis
+                textMesh.rotation.y += 0.01;
+                outlineMesh.rotation.y += 0.01;
+
+                // Oscillate rotation on Z axis to prevent flipping
+                textMesh.rotation.z = 0.05 * Math.sin(time * 2);
+                outlineMesh.rotation.z = 0.05 * Math.sin(time * 2);
+
+                // Make the text float up and down
+                textMesh.position.y = 0.2 * Math.sin(time * 2); // amplitude and speed
+                outlineMesh.position.y = 0.2 * Math.sin(time * 2); // same movement as text
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>

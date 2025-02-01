@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typer - alexradu.co</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Code for a web application that is all white and just takes whatever you type in and puts it on the screen  so you can read it-->
+    <div id="app">
+        <input type="text" id="input" placeholder="Type here...">
+        <div id="output">
+            <p id="text"></p>
+        </div>
+    </div>
+    
+    <!-- Additional Messaging Interface -->
+    <div class="message-interface">
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+        <div id="messageOutput">
+            <!-- Messages will appear here -->
+        </div>
+    </div>
+    <script src="typer.js"></script>
+</body>
+</html>
