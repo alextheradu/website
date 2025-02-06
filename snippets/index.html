@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - alexradu.co</title>
+    <meta name="description" content="Welcome to my website! Here you can find information about me and my awesome projects." />
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel='stylesheet' href='../style.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    
+</head>
+<body class="light-mode"> <!-- Set initial mode -->
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Dark Mode Switch -->
+        <label class="switch" aria-label="Toggle Dark Mode">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+        <!-- Buttons Container moved inside header -->
+        <div class="buttons-container">
+            <ul>
+                <li class="active"><a href="../" class="active-text"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                <li><a href="/projects/"><i class="fa fa-cube" aria-hidden="true"></i></a></li>
+                <li><a href="/blog"><i class="fa fa-file-text" aria-hidden="true"></i></a></li>
+                <li><a href="/links/"><i class="fa fa-link" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Alex Radu</h1>
+        <h3>Welcome to my website! Here you can find information about me and my projects.</h3>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        const lis = document.querySelectorAll("li");
+        for (let i = 0; i < lis.length; i++) {
+            lis[i].addEventListener("click", function () {
+                lis.forEach(li => {
+                    li.classList.remove("active");
+                    li.querySelector("a").classList.remove("active-text");
+                });
+                this.classList.add("active");
+                this.querySelector("a").classList.add("active-text");
+            });
+        }
+    </script>
+    <script src="../index.js" defer></script>
+    <script src="index.js" defer></script>
+    <style>
+    :root {
+    --button-width: 60px;
+    --button-height: 40px;
+    --button-border: 1px solid #353535;
+    --button-box: 0 calc(var(--button-height) * 0.23) calc(var(--button-height) * 0.31) 0 rgba(0,0,0,0.5);
+    /* New variables for container dimensions */
+    --button-box-width: calc(var(--button-width) * 4 + 25px);  /* 4 buttons + extra spacing */
+    --button-box-height: calc(var(--button-height) + 15px);       /* button height plus vertical spacing */
+    --container-offset: 70px; /* Adjust this value to prevent clipping */
+}
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700");
+/* Merged styles from second file */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+header {
+    position: relative;
+    height: 70px; /* Set the navigation bar height */
+}
+.buttons-container {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: var(--button-box-width);
+    height: var(--button-box-height);
+    border-radius: calc(var(--button-box-height) / 2);
+    background: #151515;
+    box-shadow: inset 0 0 2px 2px rgba(0,0,0,0.5);
+}
+ul { list-style: none; width: inherit; height: inherit; display: flex; align-items: center; justify-content: center; }
+ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+    height: var(--button-height);
+    width: var(--button-width);
+    background: #202020;
+    border-top: var(--button-border);
+    box-shadow: var(--button-box);
+    transition: all .5s;
+}
+ul li:nth-of-type(1) { border-top-left-radius: 40px; border-bottom-left-radius: 40px; }
+ul li:last-of-type { border-top-right-radius: 40px; border-bottom-right-radius: 40px; }
+ul li:hover { cursor: pointer; }
+ul li a { display: inline-block; color: gray; text-decoration: none; font-size: 27.5px; transition: all .5s; }
+.active {
+    background: #151515;
+    border-top: none;
+    border-bottom: 1px solid #252525;
+    box-shadow: inset 0 0 10px 1px rgba(0,0,0,0.8);
+}
+.active-text {
+    color: rgb(67, 220, 20);
+    text-shadow: 0 0 15px rgba(10, 220, 24, 0.5);
+}
+    </style>
+</body>
+</html>

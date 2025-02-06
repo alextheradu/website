@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('darkModeToggle');
     const body = document.body;
 
+    if (!toggle) {
+        console.error('Toggle element not found');
+        return;
+    }
+
     // Check for saved user preference
     const darkMode = localStorage.getItem('darkMode');
 
