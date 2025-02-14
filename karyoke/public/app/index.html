@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Karaokly - Beta v1.0</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #ffd1ac, #ffaec0, #9fdeff, #a0ffd3);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2d3748;
+      margin-bottom: 25px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    input {
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #764ba2;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    #error {
+      color: #e53e3e;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #logout {
+      margin: 20px 0;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .user-info {
+      text-align: left;
+      color: #2d3748;
+      font-weight: 500;
+    }
+    .logout-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    #results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .video-item {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .video-item:hover {
+      transform: translateY(-5px);
+    }
+    .video-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .video-item p {
+      padding: 10px;
+      margin: 0;
+      font-size: 14px;
+      color: #2d3748;
+    }
+    .video-item button {
+      width: 100%;
+      border-radius: 0;
+    }
+    #playlist {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    #playlist li {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    #playlist li:hover {
+      transform: translateX(5px);
+    }
+    #player-container {
+      display: none; /* Hide by default */
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      margin: 30px 0;
+    }
+    #player-container.active {
+      display: block; /* Show when has active class */
+    }
+    #playlist-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .playlist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #play-all-btn {
+      background: #28a745;
+    }
+    #play-all-btn:hover {
+      background: #218838;
+    }
+    .playlist-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    #shuffle-btn {
+      background: #9333ea;
+    }
+    #shuffle-btn:hover {
+      background: #7e22ce;
+    }
+    #no-playlist-msg {
+      margin: 20px 0;
+      font-size: 1.2em;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+  </style>
+  <link rel="icon" href="../karyoke.png" type="image/png">
+</head>
+<body>
+  <div class="container">
+    <!-- Authentication Section -->
+    <div id="auth-section" class="form-container">
+      <h1>Login / Signup</h1>
+      <div id="error"></div>
+      <form id="auth-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <div style="display: flex; justify-content: space-around;">
+          <button type="button" id="login-btn">Login</button>
+          <button type="button" id="signup-btn">Sign Up</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Main Karaoke App Section (hidden until login) -->
+    <div id="app-section" style="display: none;">
+      <div id="logout">
+        <div class="user-info">
+          Logged in as: <span id="loggedInUser"></span>
+        </div>
+        <div class="logout-buttons">
+          <button id="logout-btn">Logout</button>
+          <button id="delete-account-btn">Delete Account</button>
+        </div>
+      </div>
+      <h1>Karaoke Song Finder</h1>
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="Enter song name...">
+        <button type="submit">Search</button>
+      </form>
+      <div id="results"></div>
+      <div id="player-container"></div>
+
+      <!-- Playlist Section -->
+      <div id="no-playlist-msg" style="display: none;">
+        <p>Search for a song and hit "Save" to add it to your playlist.</p>
+      </div>
+      <div id="playlist-container">
+        <div class="playlist-header">
+          <h2>My Playlist</h2>
+          <div class="playlist-buttons">
+            <button id="play-all-btn">Play All</button>
+            <button id="shuffle-btn">Shuffle Play</button>
+          </div>
+        </div>
+        <ul id="playlist"></ul>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let playlist = []; // Will be loaded from the server
+
+    // On page load, check login status.
+    window.addEventListener('load', () => {
+      fetch('/check-login')
+        .then(response => response.json())
+        .then(data => {
+          if(data.loggedIn) {
+            showApp(data.username);
+            loadPlaylist();
+          } else {
+            window.location.href = '/login';
+          }
+        });
+    });
+
+    function showApp(username) {
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('app-section').style.display = 'block';
+      document.getElementById('loggedInUser').textContent = username;
+    }
+
+    function showAuth() {
+      document.getElementById('auth-section').style.display = 'block';
+      document.getElementById('app-section').style.display = 'none';
+      document.getElementById('player-container').classList.remove('active');
+    }
+
+    // Handle login
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          showApp(data.username);
+          loadPlaylist();
+        } else {
+          document.getElementById('error').textContent = data.error || 'Login failed.';
+        }
+      });
+    });
+
+    // Handle signup
+    document.getElementById('signup-btn').addEventListener('click', () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          showApp(data.username);
+          loadPlaylist();
+        } else {
+          document.getElementById('error').textContent = data.error || 'Signup failed.';
+        }
+      });
+    });
+
+    // Handle logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      fetch('/logout', { method: 'POST' })
+        .then(response => response.json())
+        .then(() => {
+          window.location.href = '/login';
+        });
+    });
+
+    // Handle Delete Account
+    document.getElementById('delete-account-btn').addEventListener('click', () => {
+      if(confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+        fetch('/delete-account', { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+            if(data.success) {
+              alert("Your account has been deleted.");
+              window.location.href = '/login';
+            } else {
+              alert("Error deleting account: " + (data.error || "Unknown error."));
+            }
+          })
+          .catch(error => {
+            console.error("Error deleting account:", error);
+            alert("Error deleting account.");
+          });
+      }
+    });
+
+    // --- Karaoke App Code ---
+    // The search now uses our server endpoint /api/search, which acts as a proxy for the YouTube API.
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = document.getElementById('search-input').value.trim();
+      if(query === '') return;
+      searchKaraoke(query);
+    });
+
+    function searchKaraoke(query) {
+      fetch(`/api/search?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          displayResults(data.items);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function displayResults(videos) {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = ''; // Clear previous results
+      videos.forEach(video => {
+        const videoId = video.id.videoId;
+        const title = video.snippet.title;
+        const thumbnail = video.snippet.thumbnails.medium.url;
+
+        const videoDiv = document.createElement('div');
+        videoDiv.className = 'video-item';
+        videoDiv.innerHTML = `<img src="${thumbnail}" alt="${title}">
+                              <p>${title}</p>`;
+
+        // Clicking the video plays it in an embedded player.
+        videoDiv.addEventListener('click', () => {
+          playVideo(videoId);
+        });
+
+        // "Save" button to add video to the playlist (stops propagation so video isn’t auto-played)
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          addToPlaylist({ videoId, title });
+        });
+        videoDiv.appendChild(saveButton);
+
+        resultsContainer.appendChild(videoDiv);
+      });
+    }
+
+    function playVideo(videoId) {
+      const playerContainer = document.getElementById('player-container');
+      playerContainer.innerHTML = `<iframe width="560" height="315" 
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen></iframe>`;
+      playerContainer.classList.add('active');
+    }
+
+    // Load the playlist from the server
+    function loadPlaylist() {
+      document.getElementById('player-container').classList.remove('active');
+      fetch('/playlist')
+        .then(response => response.json())
+        .then(data => {
+          if (data.playlist) {
+            playlist = data.playlist;
+            displayPlaylist();
+          }
+        });
+    }
+
+    // Add a video to the playlist via the server
+    function addToPlaylist(video) {
+      fetch('/playlist/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ video })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          playlist = data.playlist;
+          displayPlaylist();
+          // Clear search results and input
+          document.getElementById('results').innerHTML = '';
+          document.getElementById('search-input').value = '';
+        } else {
+          console.error('Error adding video:', data.error);
+        }
+      });
+    }
+
+    // Remove a video from the playlist via the server
+    function removeFromPlaylist(videoId) {
+      fetch('/playlist/remove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          playlist = data.playlist;
+          displayPlaylist();
+        } else {
+          console.error('Error removing video:', data.error);
+        }
+      });
+    }
+
+    function displayPlaylist() {
+      const playlistElement = document.getElementById('playlist');
+      const playlistContainer = document.getElementById('playlist-container');
+      const noPlaylistMsg = document.getElementById('no-playlist-msg');
+
+      if (playlist.length === 0) {
+        playlistContainer.style.display = 'none';
+        noPlaylistMsg.style.display = 'block';
+        return;
+      } else {
+        playlistContainer.style.display = 'block';
+        noPlaylistMsg.style.display = 'none';
+      }
+
+      playlistElement.innerHTML = '';
+      playlist.forEach((video) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${video.title}</span>
+                        <div>
+                          <button onclick="playVideo('${video.videoId}')">Play</button>
+                          <button onclick="removeFromPlaylist('${video.videoId}')">Remove</button>
+                        </div>`;
+        playlistElement.appendChild(li);
+      });
+    }
+    
+    let currentPlayingIndex = -1;
+    let shuffledPlaylist = [];
+    let isShuffleMode = false;
+
+    // Add event listener for play all button
+    document.getElementById('play-all-btn').addEventListener('click', () => {
+      if (playlist.length > 0) {
+        isShuffleMode = false;
+        currentPlayingIndex = 0;
+        playCurrentVideo();
+      }
+    });
+
+    // Add event listener for shuffle button
+    document.getElementById('shuffle-btn').addEventListener('click', () => {
+      if (playlist.length > 0) {
+        isShuffleMode = true;
+        shuffledPlaylist = [...playlist].sort(() => Math.random() - 0.5);
+        currentPlayingIndex = 0;
+        playCurrentVideo();
+      }
+    });
+
+    function playCurrentVideo() {
+      if (currentPlayingIndex >= 0) {
+        const currentPlaylist = isShuffleMode ? shuffledPlaylist : playlist;
+        
+        if (currentPlayingIndex < currentPlaylist.length) {
+          const video = currentPlaylist[currentPlayingIndex];
+          playVideo(video.videoId);
+          
+          const iframe = document.querySelector('#player-container iframe');
+          if (iframe) {
+            iframe.addEventListener('load', () => {
+              new YT.Player(iframe, {
+                events: {
+                  'onStateChange': (event) => {
+                    if (event.data === 0) { // video ended
+                      currentPlayingIndex++;
+                      if (currentPlayingIndex < currentPlaylist.length) {
+                        playCurrentVideo();
+                      } else {
+                        currentPlayingIndex = -1;
+                        isShuffleMode = false;
+                      }
+                    }
+                  }
+                }
+              });
+            });
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Add YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

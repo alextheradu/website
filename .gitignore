@@ -1,0 +1,6 @@
+.env
+git-filter-repo
+node_modules
+npm-debug.log
+karaoke
+karaoke/*
