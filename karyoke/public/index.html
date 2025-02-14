@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Karaokly - Beta v1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karaokly - Beta v1.1</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,6 +17,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      overflow: hidden; /* added to disable scrolling */
     }
     h1 {
       font-size: 64px;
@@ -57,13 +59,44 @@
         align-items: center;
         height: 100vh;
         margin: 0;
+        overflow: hidden; /* added to disable scrolling */
+    }
+    /* Optional: disable scrolling on html */
+    html {
+        overflow: hidden;
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 48px;
+      }
+      p, a {
+        font-size: 18px;
+      }
+      a {
+        padding: 10px 30px;
+      }
     }
   </style>
   <link rel="icon" href="karyoke.png" type="image/png">
 </head>
 <body>
-  <h1>Welcome to Karaokly Beta v1.0!</h1>
+  <h1>Welcome to Karaokly Beta v1.1!</h1>
   <p>Your favorite karaoke songs are just a click away.</p>
-  <a href="/sign-up/">Enter the App</a>
+  <!-- Modified: set id and remove direct href -->
+  <a id="enter-app-btn" href="#">Enter Karaokly 🎤</a>
+  <!-- New JS to handle redirect based on sign-in status -->
+  <script>
+    document.getElementById('enter-app-btn').addEventListener('click', e => {
+      e.preventDefault();
+      fetch('/check-login')
+        .then(response => response.json())
+        .then(data => {
+          window.location.href = data.loggedIn ? '/app' : '/sign-up';
+        })
+        .catch(() => {
+          window.location.href = '/sign-up';
+        });
+    });
+  </script>
 </body>
 </html>

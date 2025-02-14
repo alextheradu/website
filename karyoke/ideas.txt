@@ -1,0 +1,7 @@
+make a reset password in the dash
+genres (maybe)
+score (unanimous voting system)
+
+create a button under the youtube video (only when it's open) that creates a seperate window so while a song is playing and the user is singing to the song, i can add other songs to the playlist, so that the user experience doesn't have to stop to go search for a song, but the song it's already on the playlist. 
+
+create a party mix so that you create a song list of one ore many users and you keep track of each user's song choice....   and play the songs as they are entered into the list. 

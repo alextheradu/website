@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Karaokly - Beta v1.0</title>
   <style>
     body {
@@ -12,6 +13,7 @@
       background: linear-gradient(-45deg, #ffd1ac, #ffaec0, #9fdeff, #a0ffd3);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
+      overflow-x: hidden; /* New: Prevent horizontal overflow */
     }
     @keyframes gradientBG {
       0% {
@@ -96,6 +98,11 @@
     .logout-buttons {
       display: flex;
       gap: 10px;
+    }
+    /* New rule for smaller logout buttons */
+    .logout-buttons button {
+      padding: 8px 10px;
+      font-size: 14px;
     }
     #results {
       display: grid;
@@ -192,6 +199,95 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       text-align: center;
     }
+    @media (max-width: 480px) {
+      .container {
+        padding: 10px;
+      }
+      .form-container, #playlist-container {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box; /* Ensure padding is included in width */
+      }
+      input, button {
+        font-size: 14px;
+      }
+      /* New mobile adjustments for playlist */
+      #playlist li {
+        padding: 10px;
+        margin: 8px 0;
+        font-size: 14px;
+      }
+      #playlist li > div button {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+      /* New mobile adjustment for playlist header layout */
+      .playlist-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+    /* New responsive YouTube embed styles */
+    .video-responsive {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+    .video-responsive iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    /* New CSS for account dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: none; /* Remove any background */
+      margin-top: 5px;  /* Added space between button and content */
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    /* Updated dropdown button colors for better visibility */
+    .dropdown-content button {
+      background: #667eea;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .dropdown-content button:hover {
+      background: #764ba2;
+    }
+    .show {
+      display: block;
+    }
+    /* New rule for extra spacing between dropdown buttons */
+    .dropdown-content button:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    /* New styling for delete account button */
+    #delete-account-btn {
+      background: red !important;
+    }
+    #delete-account-btn:hover {
+      background: darkred !important;
+    }
   </style>
   <link rel="icon" href="../karyoke.png" type="image/png">
 </head>
@@ -204,7 +300,7 @@
       <form id="auth-form">
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
-        <div style="display: flex; justify-content: space-around;">
+        <div style="display: flex; justify-content: space-around; gap: 20px;">
           <button type="button" id="login-btn">Login</button>
           <button type="button" id="signup-btn">Sign Up</button>
         </div>
@@ -217,12 +313,17 @@
         <div class="user-info">
           Logged in as: <span id="loggedInUser"></span>
         </div>
-        <div class="logout-buttons">
-          <button id="logout-btn">Logout</button>
-          <button id="delete-account-btn">Delete Account</button>
+        <!-- Replaced logout-buttons with an account dropdown -->
+        <div class="dropdown">
+          <button id="account-dropdown-btn">Account &#9662;</button>
+          <div class="dropdown-content">
+            <button id="logout-btn">Sign Out</button>
+            <button id="reset-password-btn">Reset Password</button>
+            <button id="delete-account-btn">Delete Account</button>
+          </div>
         </div>
       </div>
-      <h1>Karaoke Song Finder</h1>
+      <h1>Karaokly - A Karaoke Song Finder</h1>
       <form id="search-form">
         <input type="text" id="search-input" placeholder="Enter song name...">
         <button type="submit">Search</button>
@@ -333,7 +434,7 @@
           .then(data => {
             if(data.success) {
               alert("Your account has been deleted.");
-              window.location.href = '/login';
+              window.location.href = '/sign-up/';
             } else {
               alert("Error deleting account: " + (data.error || "Unknown error."));
             }
@@ -343,6 +444,29 @@
             alert("Error deleting account.");
           });
       }
+    });
+
+    // Handle Reset Password
+    document.getElementById('reset-password-btn').addEventListener('click', () => {
+      const newPassword = prompt("Enter your new password:");
+      if (!newPassword) return;
+      fetch('/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newPassword })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          alert("Password reset successfully.");
+        } else {
+          alert("Error resetting password: " + (data.error || "Unknown error."));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert("Error resetting password.");
+      });
     });
 
     // --- Karaoke App Code ---
@@ -396,14 +520,30 @@
       });
     }
 
+    let currentVideoId = '';
+
     function playVideo(videoId) {
+      currentVideoId = videoId;
       const playerContainer = document.getElementById('player-container');
-      playerContainer.innerHTML = `<iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen></iframe>`;
+      playerContainer.innerHTML = `
+        <div class="video-responsive">
+          <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <button id="open-player-window-btn" onclick="openPlayerWindow()">Open Player Window</button>
+        </div>
+      `;
       playerContainer.classList.add('active');
+    }
+
+    function openPlayerWindow() {
+      window.open('/player-window.html?videoId=' + encodeURIComponent(currentVideoId),
+        'playerWindow',
+        'width=800,height=600'
+      );
     }
 
     // Load the playlist from the server
@@ -466,6 +606,9 @@
       if (playlist.length === 0) {
         playlistContainer.style.display = 'none';
         noPlaylistMsg.style.display = 'block';
+        // Remove existing Remove All button if any
+        const existingRemoveAll = document.getElementById('remove-all-btn');
+        if (existingRemoveAll) existingRemoveAll.remove();
         return;
       } else {
         playlistContainer.style.display = 'block';
@@ -473,15 +616,55 @@
       }
 
       playlistElement.innerHTML = '';
+      // Remove duplicate Remove All button if exists
+      const existingRemoveAll = document.getElementById('remove-all-btn');
+      if (existingRemoveAll) existingRemoveAll.remove();
+
       playlist.forEach((video) => {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${video.title}</span>
+        // Added display:block and margin-bottom to increase vertical spacing
+        li.innerHTML = `<span style="margin-right: 40px; display: block; margin-bottom: 20px;">${video.title}</span>
                         <div>
                           <button onclick="playVideo('${video.videoId}')">Play</button>
-                          <button onclick="removeFromPlaylist('${video.videoId}')">Remove</button>
+                          <button style="background: red; color: white;" onclick="removeFromPlaylist('${video.videoId}')">Remove</button>
                         </div>`;
         playlistElement.appendChild(li);
       });
+
+      // Append Remove All Button once
+      const removeAllBtn = document.createElement('button');
+      removeAllBtn.id = 'remove-all-btn';
+      removeAllBtn.textContent = 'Remove All';
+      removeAllBtn.style.marginTop = '20px';
+      removeAllBtn.style.background = 'red';
+      removeAllBtn.style.color = 'white';
+      removeAllBtn.onclick = () => {
+        if (confirm("Are you sure you want to remove all songs from your playlist?")) {
+          fetch('/playlist/clear', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              playlist = [];
+              displayPlaylist();
+            } else {
+              console.error('Error clearing playlist:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Fetch error in clear playlist:', error);
+          });
+        }
+      };
+      playlistElement.parentElement.appendChild(removeAllBtn);
     }
     
     let currentPlayingIndex = -1;
@@ -538,6 +721,15 @@
         }
       }
     }
+
+    // New JS for dropdown toggle
+    document.getElementById('account-dropdown-btn').addEventListener('click', function(event) {
+      event.stopPropagation();
+      document.querySelector('.dropdown-content').classList.toggle('show');
+    });
+    document.addEventListener('click', function() {
+      document.querySelector('.dropdown-content').classList.remove('show');
+    });
   </script>
 
   <!-- Add YouTube IFrame API -->

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Window</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 10px; }
+    #player { max-width: 100%; }
+    #queue { margin-top: 20px; }
+    #queue li { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+  <h3>Up Next</h3>
+  <ul id="queue"></ul>
+
+  <script>
+    let player;
+    let playlist = [];
+    let currentIndex = -1;
+
+    // Get initial videoId and index from query parameter.
+    const params = new URLSearchParams(window.location.search);
+    const initialVideoId = params.get('videoId') || '';
+    const providedIndex = params.get('index');
+    if (providedIndex) {
+      currentIndex = parseInt(providedIndex, 10);
+    }
+
+    // Load user's playlist from the server.
+    function loadPlaylist() {
+      fetch('/playlist')
+        .then(res => res.json())
+        .then(data => {
+          if(data.playlist) {
+            playlist = data.playlist;
+            if (currentIndex === -1) {
+              currentIndex = playlist.findIndex(v => v.videoId === initialVideoId);
+              if(currentIndex === -1) {
+                playlist.unshift({ videoId: initialVideoId, title: "Current Video" });
+                currentIndex = 0;
+              }
+            }
+            updateQueue();
+          }
+        })
+        .catch(err => console.error('Error loading playlist:', err));
+    }
+
+    function updateQueue() {
+      const queueEl = document.getElementById('queue');
+      queueEl.innerHTML = '';
+      const nextVideo = playlist[currentIndex + 1];
+      if (nextVideo) {
+        const thumbnailUrl = `https://img.youtube.com/vi/${nextVideo.videoId}/mqdefault.jpg`;
+        const img = document.createElement('img');
+        img.src = thumbnailUrl;
+        img.alt = nextVideo.title;
+        img.style.width = '320px'; // Adjust width as needed
+        img.style.marginTop = '20px';
+        img.style.cursor = 'pointer';
+        img.title = nextVideo.title;
+        img.onclick = () => {
+          window.location.href = window.location.pathname +
+            "?videoId=" + encodeURIComponent(nextVideo.videoId) +
+            "&index=" + (currentIndex + 1);
+        };
+        queueEl.appendChild(img);
+      }
+    }
+
+    // YouTube IFrame API Ready callback.
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: initialVideoId,
+        playerVars: { autoplay: 1 },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function refreshAndAdvance() {
+      fetch('/playlist')
+        .then(res => res.json())
+        .then(data => {
+          if (data.playlist) {
+            playlist = data.playlist;
+            const nextIndex = currentIndex + 1;
+            if (nextIndex < playlist.length) {
+              const nextVideoId = playlist[nextIndex].videoId;
+              window.location.href = window.location.pathname +
+                "?videoId=" + encodeURIComponent(nextVideoId) +
+                "&index=" + nextIndex;
+            } else {
+              // No new song: reload to check again.
+              window.location.reload();
+            }
+          }
+        })
+        .catch(err => {
+          console.error('Error refreshing playlist:', err);
+          window.location.reload();
+        });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        refreshAndAdvance();
+      }
+    }
+
+    // Load the YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    // Initialize playlist on load.
+    loadPlaylist();
+  </script>
+</body>
+</html>

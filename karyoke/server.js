@@ -21,9 +21,6 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// Serve static files from the "public" folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Utility functions for managing logins
 function loadLogins() {
   if (!fs.existsSync(loginsFile)) {
@@ -140,6 +137,21 @@ app.post('/playlist/remove', (req, res) => {
   res.status(404).json({ error: 'User not found or no playlist.' });
 });
 
+// Add endpoint to clear the user's playlist
+app.post('/playlist/clear', (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Not authenticated.' });
+  }
+  const logins = loadLogins();
+  const user = logins.find(u => u.username === req.session.user.username);
+  if (user) {
+    user.playlist = [];
+    saveLogins(logins);
+    return res.json({ success: true, playlist: [] });
+  }
+  res.status(404).json({ error: 'User not found.' });
+});
+
 // YouTube Search Proxy Endpoint
 app.get('/api/search', async (req, res) => {
   const query = req.query.q;
@@ -180,6 +192,36 @@ app.post('/delete-account', (req, res) => {
   });
 });
 
+// New Reset Password endpoint (updated logging)
+app.post('/reset-password', async (req, res) => {
+  if (!req.session.user) {
+    console.error("Reset password: no active session.");
+    return res.status(401).json({ error: 'Not authenticated.' });
+  }
+  const { newPassword } = req.body;
+  if (!newPassword) {
+    console.error("Reset password: newPassword is missing.");
+    return res.status(400).json({ error: 'Missing newPassword.' });
+  }
+  const username = req.session.user.username;
+  let logins = loadLogins();
+  const user = logins.find(u => u.username === username);
+  if (!user) {
+    console.error("Reset password: user not found for", username);
+    return res.status(404).json({ error: 'User not found.' });
+  }
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    saveLogins(logins);
+    console.log(`Password updated for user ${username}`);
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Reset password error for user", username, ":", error);
+    return res.status(500).json({ error: 'Error updating password: ' + error.message });
+  }
+});
+
 // Routes to serve the login and app pages
 app.get('/', (req, res) => {
   if(req.session.user) {
@@ -199,6 +241,9 @@ app.get('/app', (req, res) => {
   }
   res.sendFile(path.join(__dirname, 'public', 'app.html'));
 });
+
+// Ensure all API endpoints are registered before this line:
+app.use(express.static(path.join(__dirname, 'public'))); // static serving at end
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

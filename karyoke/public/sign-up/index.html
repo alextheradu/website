@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Karaokly Signup</title>
   <style>
     body {
@@ -53,6 +54,12 @@
       text-align: center;
       margin-top: 10px;
     }
+    @media (max-width: 480px) {
+      .form-container {
+        width: 90%;
+        padding: 20px;
+      }
+    }
   </style>
   <link rel="icon" href="../karyoke.png" type="image/png">
 </head>
@@ -86,6 +93,14 @@
           document.getElementById('error').textContent = data.error || 'Signup failed.';
         }
       });
+    });
+
+    // Enable form submission on Enter key
+    document.querySelector('form').addEventListener('keydown', e => {
+      if(e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('signup-btn').click();
+      }
     });
   </script>
 </body>

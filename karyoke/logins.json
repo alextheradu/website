@@ -1,2 +1,92 @@
 [
+  {
+    "username": "Michaelsweeney",
+    "password": "f8679c2a50ac50cede53ff992b319f6a:362410ff68d99b7ca2baa0582ce14a51",
+    "playlist": [
+      {
+        "videoId": "8FQXljeKRdA",
+        "title": "The Chieftains - The Foggy Dew (with Sinéad O&#39;Connor) [Karaoke version]"
+      }
+    ]
+  },
+  {
+    "username": "alex",
+    "password": "$2b$10$HCo9A8wHYzQuw7xeEuSwmuamg94bPByWhx59h18FFa19qLnJA5w6m",
+    "playlist": [
+      {
+        "videoId": "OxBt8uuRWyQ",
+        "title": "Kansas • Carry On Wayward Son (CC) 🎤 [Karaoke] [Instrumental Lyrics]"
+      },
+      {
+        "videoId": "9siKouAaf4Q",
+        "title": "Kendrick Lamar ft. Lefty Gunplay - TV Off - Karaoke - Instrumental &amp; Lyrics (T2K0390)"
+      }
+    ]
+  },
+  {
+    "username": "Criswind",
+    "password": "$2b$10$fbMMWPzQi2D9vw67hzjSrO.OMdnLDKJVpCD9vr99TqYQ/8o1XPjL2",
+    "playlist": [
+      {
+        "videoId": "qjMSGIfB1j8",
+        "title": "DANCING QUEEN -  ABBA (HD Karaoke)"
+      }
+    ]
+  },
+  {
+    "username": "Gabriel Cintron",
+    "password": "$2b$10$V892jvxDJmhdhTL8ZULLS.qKhGloemd.l2BqPgYC9FKtcXuIptG/e",
+    "playlist": [
+      {
+        "videoId": "iawgB2CDCrw",
+        "title": "Miley Cyrus - Flowers (Lyrics)"
+      },
+      {
+        "videoId": "c8tEmyLEUXc",
+        "title": "Wrecking Ball - Miley Cyrus Karaoke 【With Guide Melody】 Instrumental"
+      }
+    ]
+  },
+  {
+    "username": "jack",
+    "password": "$2b$10$oLpVsQd5Ma5ywJ.1r/qHPuzPGSVBFEQYO2DQsQBtiEAoctEqQDt62",
+    "playlist": []
+  },
+  {
+    "username": "ballslover69",
+    "password": "$2b$10$4BC4X1mSJmqW/bshMfMsXuPOTKl3vpqmoqQ60rLutKoyXXMenbg9m",
+    "playlist": [
+      {
+        "videoId": "CrE40tt7gCI",
+        "title": "ASMR singing for you..."
+      },
+      {
+        "videoId": "jhgqAhkCSIE",
+        "title": "I Want to be Like Mommy - CoComelon Karaoke Sing Along! | Kids Learn! | Nursery Rhymes | Sing Along"
+      },
+      {
+        "videoId": "pBdYuH1jo3s",
+        "title": "I love you mommy Karaoke kids"
+      },
+      {
+        "videoId": "3V4c6xzcSNI",
+        "title": "[ASMR/3dio] Karaoke w/ requests!"
+      }
+    ]
+  },
+  {
+    "username": "horacio15@rezult.org",
+    "password": "$2b$10$pCD4QAuKDmr1vTl70WLjYOWxk8QIPcEx/qfkMccBYgKOuUeKmiZ22",
+    "playlist": []
+  },
+  {
+    "username": "jedediah35@rezult.org",
+    "password": "$2b$10$0zSCEq8f3FUNE8m.m/.Jke/ikP6lUhbUCjOTU/nMHCbiALC6sFZkK",
+    "playlist": []
+  },
+  {
+    "username": "laron_ankunding99@rezult.org",
+    "password": "$2b$10$fgoLpQfQAeKsW/hG2W0S0ehp1m2KVYm8lO2Kuxt4pjRMaHBjr7q/y",
+    "playlist": []
+  }
 ]
